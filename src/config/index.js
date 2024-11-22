@@ -195,6 +195,71 @@ export const config = convict({
       format: Boolean,
       default: isDevelopment
     }
+  },
+  azureOpenAI: {
+    searchUrl: {
+      format: String,
+      default: '',
+      env: 'AZURE_AISEARCH_ENDPOINT'
+    },
+    searchApiKey: {
+      format: String,
+      default: '',
+      env: 'AZURE_AISEARCH_KEY'
+    },
+    primaryKeyName: {
+      format: String,
+      default: 'chunk_id'
+    },
+    indexName: {
+      format: String,
+      default: '',
+      env: 'AZURE_SEARCH_INDEX_NAME'
+    },
+    summaryIndexName: {
+      format: String,
+      default: '',
+      env: 'AZURE_SEARCH_SUMMARIES_INDEX_NAME'
+    },
+    openAiInstanceName: {
+      format: String,
+      default: '',
+      env: 'AZURE_OPENAI_API_INSTANCE_NAME'
+    },
+    openAiKey: {
+      format: String,
+      default: '',
+      env: 'AZURE_OPENAI_API_KEY'
+    },
+    openAiModelName: {
+      format: String,
+      default: '',
+      env: 'AZURE_OPENAI_MODEL_NAME'
+    },
+    cacheTarget: {
+      format: Number,
+      default: 0,
+      env: 'AZURE_SEARCH_CACHE_TARGET'
+    },
+    cacheIndexName: {
+      format: String,
+      default: '',
+      env: 'AZURE_SEARCH_CACHE_INDEX_NAME'
+    },
+    cacheEnabled: {
+      format: Boolean,
+      default: false,
+      env: 'AZURE_SEARCH_CACHE_ENABLED'
+    }
+  },
+  featureSummaryEnabled: {
+    format: Boolean,
+    default: false,
+    env: 'FEATURE_SUMMARY_ENABLED'
+  },
+  useFakeLlm: {
+    format: Boolean,
+    default: false
   }
 })
 

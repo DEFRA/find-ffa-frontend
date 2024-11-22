@@ -43,6 +43,9 @@ module.exports = {
         ],
         'no-console': 'error',
 
+        // just ignoring some stuff for now - POC
+        '@typescript-eslint/ban-ts-comment': 'off',
+
         // Turn off strict type checking rules
         '@typescript-eslint/no-unsafe-argument': 'off',
         '@typescript-eslint/no-unsafe-assignment': 'off',

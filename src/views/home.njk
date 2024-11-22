@@ -1,0 +1,14 @@
+{# Backstage scaffolder to render the file as is and to skip this content to interpret as template   #}
+{% extends '_layout.njk' %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-width-container">
+      <input type="hidden" name="version" value="{{ version }}">
+
+      <div class="govuk-width-container">
+        {% include "components/chat-input-box.njk" %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

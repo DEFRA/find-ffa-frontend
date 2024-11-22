@@ -2,6 +2,10 @@ import inert from '@hapi/inert'
 
 import { health } from '~/src/server/health/index.js'
 import { serveStaticFiles } from '~/src/server/common/helpers/serve-static-files.js'
+// FFA ADP Port
+import { home } from '~/src/routes/home.js'
+import { getConversation, postConversation } from '~/src/routes/conversation.js'
+import { reset } from '~/src/routes/reset.js'
 
 /**
  * @satisfies {ServerRegisterPluginObject<void>}
@@ -16,7 +20,7 @@ export const router = {
       await server.register([health])
 
       // Application specific routes, add your own routes here
-      await server.register([])
+      await server.register([home, getConversation, postConversation, reset])
 
       // Static assets
       await server.register([serveStaticFiles])

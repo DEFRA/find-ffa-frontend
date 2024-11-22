@@ -1,0 +1,128 @@
+.commandPanel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .commandText {
+    color: $govuk-secondary-text-colour;
+    margin-bottom: 10px !important;
+  }
+
+  .govuk-button {
+    margin-bottom: 10px !important;
+  }
+}
+
+.promptArea {
+  position: relative;
+
+  .promptTextArea {
+    display: block;
+
+    .govuk-form-group {
+      margin-bottom: 5px !important;
+    }
+  }
+
+  .sendButton {
+    position: absolute;
+    transform: translate(0%, 50%);
+    bottom: 20px;
+    top: auto;
+    right: 0;
+    margin: 0;
+    width: 40px;
+    height: 40px;
+    padding: 4px 0;
+    box-shadow: none;
+    background-color: $defraDarkGreen;
+
+    &:hover {
+      background-color: #005a30;
+    }
+
+    &:focus {
+      img {
+        filter: invert(100%);
+      }
+    }
+
+    .sendIcon {
+      padding: 3px;
+      padding-left: 4px;
+      padding-top: 4px;
+    }
+  }
+}
+
+.hintText {
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+
+.sticky {
+  padding-top: 10px;
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  background-color: white;
+  width: 100%;
+}
+
+.footerContainer {
+  margin-bottom: 177px;
+}
+
+.hods-loading-spinner {
+  position: absolute;
+  transform: translate(0%, 50%);
+  padding-top: 0px !important;
+  bottom: 20px;
+  top: auto;
+  right: 3px;
+  display: none;
+
+  @include govuk-responsive-padding(4, "top");
+
+  &__spinner {
+    margin-left: auto;
+    margin-right: auto;
+    border: 6px solid #dee0e2;
+    border-radius: 50%;
+    border-top-color: $defraGreen;
+    width: 22px;
+    height: 22px;
+    -webkit-animation: hods-loading-spinner-animation 2s linear infinite;
+    animation: hods-loading-spinner-animation 2s linear infinite;
+  }
+
+  &__content {
+    @include govuk-responsive-padding(4, "top");
+    text-align: center;
+  }
+}
+
+@-webkit-keyframes hods-loading-spinner-animation {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes hods-loading-spinner-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.govuk-details {
+  margin-bottom: 10px !important;
+}
