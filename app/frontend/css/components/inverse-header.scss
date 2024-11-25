@@ -1,0 +1,31 @@
+.inverse-header-container {
+  background-color: $defraDarkGreen;
+  color: govuk-colour("white");
+
+  .inverse-header {
+    padding: 30px;
+    padding-top: 15px;
+
+    .title-container {
+      margin: 50px 0;
+
+      .title-text {
+        margin-bottom: 5px;
+
+        @include breakpoint("tablet") {
+          font-size: 64px;
+        }
+      }
+
+      .govuk-prose-scope h1,
+      .govuk-heading-xl,
+      .govuk-heading-l,
+      .govuk-caption-xl,
+      .govuk-heading-m {
+        color: govuk-colour("white");
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}

@@ -1,169 +1,110 @@
-# find-ffa-frontend
+# Farming funding assistant
 
-Core delivery platform Node.js Frontend Template.
+## Prerequisites
 
-- [Requirements](#requirements)
-  - [Node.js](#nodejs)
-- [Server-side Caching](#server-side-caching)
-- [Redis](#redis)
-- [Local Development](#local-development)
-  - [Setup](#setup)
-  - [Development](#development)
-  - [Production](#production)
-  - [Npm scripts](#npm-scripts)
-  - [Update dependencies](#update-dependencies)
-  - [Formatting](#formatting)
-    - [Windows prettier issue](#windows-prettier-issue)
-- [Docker](#docker)
-  - [Development image](#development-image)
-  - [Production image](#production-image)
-  - [Docker Compose](#docker-compose)
-  - [Dependabot](#dependabot)
-  - [SonarCloud](#sonarcloud)
-- [Licence](#licence)
-  - [About the licence](#about-the-licence)
+- Docker
+- Docker Compose
 
-## Requirements
-
-### Node.js
-
-Please install [Node.js](http://nodejs.org/) `>= v18` and [npm](https://nodejs.org/) `>= v9`. You will find it
-easier to use the Node Version Manager [nvm](https://github.com/creationix/nvm)
-
-To use the correct version of Node.js for this application, via nvm:
-
-```bash
-cd find-ffa-frontend
-nvm use
-```
-
-## Server-side Caching
-
-We use Catbox for server-side caching. By default the service will use CatboxRedis when deployed and CatboxMemory for
-local development.
-You can override the default behaviour by setting the `SESSION_CACHE_ENGINE` environment variable to either `redis` or
-`memory`.
-
-Please note: CatboxMemory (`memory`) is _not_ suitable for production use! The cache will not be shared between each
-instance of the service and it will not persist between restarts.
-
-## Redis
-
-Redis is an in-memory key-value store. Every instance of a service has access to the same Redis key-value store similar
-to how services might have a database (or MongoDB). All frontend services are given access to a namespaced prefixed that
-matches the service name. e.g. `my-service` will have access to everything in Redis that is prefixed with `my-service`.
-
-If your service does not require a session cache to be shared between instances or if you don't require Redis, you can
-disable setting `SESSION_CACHE_ENGINE=false` or changing the default value in `~/src/config/index.js`.
+Optional:
+- Kubernetes
+- Helm
 
 ## Local Development
-
-### Setup
-
-Install application dependencies:
-
-```bash
-npm install
+Install local dependencies
+```BASH
+npm i
 ```
 
-### Development
-
-To run the application in `development` mode run:
-
-```bash
-npm run dev
+Copy and populate .env file (api keys will need to be added in manually)
+```BASH
+cp .env.example .env
 ```
 
-### Production
-
-To mimic the application running in `production` mode locally run:
-
-```bash
-npm start
+Spin up docker container
+```BASH
+docker-compose up 
+### or to launch in the background:
+docker-compose up -d
 ```
 
-### Npm scripts
-
-All available Npm scripts can be seen in [package.json](./package.json)
-To view them in your command line run:
-
-```bash
-npm run
+Build frontend assets
+```BASH
+npm run build
 ```
 
-### Update dependencies
+Run application on http://localhost:3000/
 
-To update dependencies use [npm-check-updates](https://github.com/raineorshine/npm-check-updates):
 
-> The following script is a good start. Check out all the options on
-> the [npm-check-updates](https://github.com/raineorshine/npm-check-updates)
+## Running the application
 
-```bash
-ncu --interactive --format group
+The application is designed to run in containerised environments, using Docker Compose in development and Kubernetes in production.
+
+- A Helm chart is provided for production deployments to Kubernetes.
+
+### Build container image
+
+Container images are built using Docker Compose, with the same images used to run the service with either Docker Compose or Kubernetes.
+
+When using the Docker Compose files in development the local `app` folder will
+be mounted on top of the `app` folder within the Docker container, hiding the CSS files that were generated during the Docker build.  For the site to render correctly locally `npm run build` must be run on the host system. This will run `webpack` build and prevents `_layout.njk` file being replaced by volume mapping in `docker-compose.override.yaml`.
+
+
+By default, the start script will build (or rebuild) images so there will
+rarely be a need to build images manually. However, this can be achieved
+through the Docker Compose
+[build](https://docs.docker.com/compose/reference/build/) command:
+
+```
+# Build container images
+docker-compose build
 ```
 
-### Formatting
+### Start
 
-#### Windows prettier issue
+Use Docker Compose to run service locally.
 
-If you are having issues with formatting of line breaks on Windows update your global git config by running:
-
-```bash
-git config --global core.autocrlf false
+```
+docker-compose up
 ```
 
-## Docker
+## Test structure
 
-### Development image
+The tests have been structured into subfolders of `./test` as per the
+[Microservice test approach and repository structure](https://eaflood.atlassian.net/wiki/spaces/FPS/pages/1845396477/Microservice+test+approach+and+repository+structure)
 
-Build:
+### Running tests
 
-```bash
-docker build --target development --no-cache --tag find-ffa-frontend:development .
+A convenience script is provided to run automated tests in a containerised
+environment. This will rebuild images before running tests via docker-compose,
+using a combination of `docker-compose.yaml` and `docker-compose.test.yaml`.
+The command given to `docker-compose run` may be customised by passing
+arguments to the test script.
+
+Examples:
+
+```
+# Run all tests
+scripts/test
+
+# Run tests with file watch
+scripts/test -w
 ```
 
-Run:
+## CI pipeline
 
-```bash
-docker run -p 3000:3000 find-ffa-frontend:development
+This service uses the ADP CI pipeline.
+
+### AppConfig - KeyVault References
+If the application uses `keyvault references` in `appConfig.env.yaml`, please make sure the variable to be added to keyvault is created in ADO Library variable groups and the reference for the variable groups and variables are provided in `build.yaml` like below.
+
 ```
-
-### Production image
-
-Build:
-
-```bash
-docker build --no-cache --tag find-ffa-frontend .
+variableGroups: 
+    - fcp-find-ai-frontend-snd1
+    - fcp-find-ai-frontend-snd2
+    - fcp-find-ai-frontend-snd3
+variables:
+    - fcp-find-ai-frontend-APPINSIGHTS-CONNECTIONSTRING
 ```
-
-Run:
-
-```bash
-docker run -p 3000:3000 find-ffa-frontend
-```
-
-### Docker Compose
-
-A local environment with:
-
-- Localstack for AWS services (S3, SQS)
-- Redis
-- MongoDB
-- This service.
-- A commented out backend example.
-
-```bash
-docker compose up --build -d
-```
-
-### Dependabot
-
-We have added an example dependabot configuration file to the repository. You can enable it by renaming
-the [.github/example.dependabot.yml](.github/example.dependabot.yml) to `.github/dependabot.yml`
-
-### SonarCloud
-
-Instructions for setting up SonarCloud can be found in [sonar-project.properties](./sonar-project.properties)
 
 ## Licence
 
@@ -177,8 +118,6 @@ The following attribution statement MUST be cited in your products and applicati
 
 ### About the licence
 
-The Open Government Licence (OGL) was developed by the Controller of Her Majesty's Stationery Office (HMSO) to enable
-information providers in the public sector to license the use and re-use of their information under a common open
-licence.
+The Open Government Licence (OGL) was developed by the Controller of Her Majesty's Stationery Office (HMSO) to enable information providers in the public sector to license the use and re-use of their information under a common open licence.
 
 It is designed to encourage use and re-use of information freely and flexibly, with only a few conditions.

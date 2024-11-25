@@ -1,11 +1,18 @@
+.config/
+.env
 .DS_Store
 .npm/
+.standard-v12-cache/
 .vscode
 .idea
-.public
-.server
+app/static/stylesheets/*.css*
+auth
+lcov.info
 node_modules
 npm-debug.log
-coverage
-.cache
-.envrc
+test-output
+dist
+*.tgz
+*.lock
+# Generated views
+_layout.njk
