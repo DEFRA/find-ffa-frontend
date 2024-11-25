@@ -1,4 +1,4 @@
-const { logEvent } = require('../insights')
+const { logger } = require('./logger')
 
 const Event = {
   USER_MESSAGE: 'EVENT_USER_MESSAGE',
@@ -17,7 +17,7 @@ const Event = {
  * @param {{message: string, conversationId: string}} eventProps
  */
 const trackMessage = (eventProps) => {
-  logEvent(Event.USER_MESSAGE, eventProps)
+  logger.debug(Event.USER_MESSAGE, eventProps)
 }
 
 /**
@@ -25,27 +25,27 @@ const trackMessage = (eventProps) => {
  * @param {{message: string, conversationId: string}} eventProps
  */
 const trackSystemMessage = (eventProps) => {
-  logEvent(Event.SYSTEM_MESSAGE, eventProps)
+  logger.debug(Event.SYSTEM_MESSAGE, eventProps)
 }
 
 const trackLandingPageView = (conversationId) => {
-  logEvent(Event.LANDING_PAGE_VIEW, { time: new Date(), conversationId })
+  logger.debug(Event.LANDING_PAGE_VIEW, { time: new Date(), conversationId })
 }
 
 const trackConversationPageView = (conversationId) => {
-  logEvent(Event.CONVERSATION_PAGE_VIEW, { time: new Date(), conversationId })
+  logger.debug(Event.CONVERSATION_PAGE_VIEW, { time: new Date(), conversationId })
 }
 
 const trackHallucinatedLinkInResponse = ({ requestQuery, errorMessage, failedObject }) => {
-  logEvent(Event.HALLUCINATED_LINK, { time: new Date(), requestQuery, errorMessage, failedObject })
+  logger.debug(Event.HALLUCINATED_LINK, { time: new Date(), requestQuery, errorMessage, failedObject })
 }
 
 const trackFetchResponseFailed = ({ requestQuery, errorMessage, retryCount }) => {
-  logEvent(Event.FETCH_RESPONSE_FAILED, { time: new Date(), requestQuery, errorMessage, retryCount })
+  logger.debug(Event.FETCH_RESPONSE_FAILED, { time: new Date(), requestQuery, errorMessage, retryCount })
 }
 
 const trackCacheUpload = ({ requestQuery }) => {
-  logEvent(Event.CACHE_UPLOAD, { time: new Date(), requestQuery })
+  logger.debug(Event.CACHE_UPLOAD, { time: new Date(), requestQuery })
 }
 
 module.exports = {

@@ -2,7 +2,6 @@ const Uuid = require('uuid')
 const { generateEmbedding } = require('./open-ai-service')
 const { logger } = require('../lib/logger')
 const { getSearchClient } = require('../lib/azure-search-client')
-const { logEvent } = require('../insights')
 const { Event, trackCacheUpload } = require('../lib/events')
 const config = require('../config')
 
@@ -51,17 +50,17 @@ const searchCache = async (query) => {
       }
 
       if (result.score >= scoreTarget) {
-        logEvent(Event.CACHE_HIT, { score: result.score, target: scoreTarget })
+        logger.debug(Event.CACHE_HIT, { score: result.score, target: scoreTarget })
 
         return result.document.answer
       }
     }
 
-    logEvent(Event.CACHE_MISS, { score: highestScore, target: scoreTarget })
+    logger.debug(Event.CACHE_MISS, { score: highestScore, target: scoreTarget })
 
     return undefined
   } catch (error) {
-    logEvent(Event.CACHE_MISS, { score: 0, target: scoreTarget, failed: true })
+    logger.debug(Event.CACHE_MISS, { score: 0, target: scoreTarget, failed: true })
     logger.error(error)
 
     return undefined

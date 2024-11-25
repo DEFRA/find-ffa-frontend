@@ -6,10 +6,11 @@ if (process.env.NODE_ENV !== 'test') {
 
 const schema = Joi.object({
   env: Joi.string().valid('development', 'test', 'production').required(),
-  appInsightsKey: Joi.string().optional(),
-
-  version: Joi.string().required(),
   logLevel: Joi.string().default('error'),
+  logFormat: Joi.string().optional(),
+  serviceName: Joi.string().default('find-ffa-frontend'),
+  httpsProxy: Joi.string().optional(),
+  httpProxy: Joi.string().optional(),
 
   auth: Joi.object({
     authUser: Joi.string().required(),
@@ -76,9 +77,10 @@ const schema = Joi.object({
 
 const config = {
   env: process.env.NODE_ENV,
-  appInsightsKey: process.env.APPINSIGHTS_CONNECTIONSTRING,
-  version: '0.1.53',
   logLevel: process.env.LOG_LEVEL || 'error',
+  logFormat: process.env.NODE_ENV === 'production' ? 'ecs' : 'pino-pretty',
+  httpsProxy: process.env.CDP_HTTPS_PROXY,
+  httpProxy: process.env.CDP_HTTP_PROXY,
 
   auth: {
     authUser: process.env.AUTH_USER,
