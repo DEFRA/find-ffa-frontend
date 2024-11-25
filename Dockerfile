@@ -1,9 +1,19 @@
-ARG PARENT_VERSION=2.1.2-node18.11.0
+ARG PARENT_VERSION=latest-20
 ARG PORT=3000
 ARG PORT_DEBUG=9229
 
 # Development
 FROM defradigital/node-development:${PARENT_VERSION} AS development
+
+ENV TZ="Europe/London"
+
+# Add curl to template.
+# CDP PLATFORM HEALTHCHECK REQUIREMENT
+USER root
+RUN apk update && \
+    apk add curl
+
+USER node
 ARG PARENT_VERSION
 LABEL uk.gov.defra.adp.parent-image=defradigital/node-development:${PARENT_VERSION}
 ARG PORT
@@ -18,6 +28,16 @@ CMD [ "npm", "run", "start:watch" ]
 
 # Production
 FROM defradigital/node:${PARENT_VERSION} AS production
+
+ENV TZ="Europe/London"
+
+# Add curl to template.
+# CDP PLATFORM HEALTHCHECK REQUIREMENT
+USER root
+RUN apk update && \
+    apk add curl
+
+USER node
 ARG PARENT_VERSION
 ARG REGISTRY
 LABEL uk.gov.defra.adp.parent-image=defradigital/node:${PARENT_VERSION}
