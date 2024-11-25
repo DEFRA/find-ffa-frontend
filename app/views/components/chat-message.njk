@@ -1,0 +1,41 @@
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+<div class="chat-message" id="{{ 'latestChatMessage' if params.scrollToMessage else 'chatMessage' }}">
+  <div class="chat-accessory {{ 'userMessage' if params.role === 'user' }}">
+    <span class="message-owner govuk-body-l govuk-!-font-weight-bold">
+      {% if params.role === 'user' %}
+        <span class="message-icon"><img class="flippedImg" src="/static/images/comment.svg" alt=""/></span>
+            You
+          {% else %}
+        <span class="message-icon"><img src="/static/images/comment.svg" alt=""/></span>
+            Farming funding assistant
+          {% endif %}
+    </span>
+  </div>
+
+  <div class="answer govuk-body govuk-!-margin-bottom-0 {{ 'userMessage' if params.role === 'user' }}">
+    {{ params.answer }}
+  </div>
+
+  <div class="govuk-body">
+    <ul class="cards">
+      {% for item in params.items %}
+        <li class="card-item">
+          <h3 class="govuk-heading-s">
+            <a href="{{ item.url }}" class="govuk-link">{{ item.title }}</a>
+          </h3>
+          <p>{{ item.summary }}</p>
+
+          {% if item.scheme %}
+            <span>
+              {{ govukTag({
+                text: item.scheme,
+                classes: "govuk-tag--grey schemePill"
+              }) }}
+            </span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

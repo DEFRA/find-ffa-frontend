@@ -1,25 +1,43 @@
-/**
- * @type {Config}
- */
-export default {
-  rootDir: '.',
-  verbose: true,
-  resetModules: true,
-  clearMocks: true,
-  silent: true,
-  testMatch: ['**/src/**/*.test.js'],
-  reporters: ['default', ['github-actions', { silent: false }], 'summary'],
-  collectCoverageFrom: ['src/**/*.js'],
+module.exports = {
+  collectCoverage: true,
+  collectCoverageFrom: [
+    '**/*.js',
+    '!**/*.test.js'
+  ],
+  coverageDirectory: 'test-output',
+  coverageReporters: [
+    'text-summary',
+    'cobertura',
+    'lcov'
+  ],
   coveragePathIgnorePatterns: [
     '<rootDir>/node_modules/',
-    '<rootDir>/.server',
-    '<rootDir>/.public',
-    '<rootDir>/src/__fixtures__',
-    '<rootDir>/src/server/common/test-helpers'
+    '<rootDir>/app/dist/',
+    '<rootDir>/app/frontend/',
+    '<rootDir>/test-output/',
+    '<rootDir>/test/',
+    '<rootDir>/jest.config.js',
+    '<rootDir>/rename.js',
+    '<rootDir>/webpack.config.js'
   ],
-  coverageDirectory: '<rootDir>/coverage'
+  modulePathIgnorePatterns: [
+    'node_modules'
+  ],
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      {
+        suiteName: 'jest tests',
+        outputDirectory: 'test-output',
+        outputName: 'junit.xml'
+      }
+    ]
+  ],
+  testEnvironment: 'node',
+  testPathIgnorePatterns: [],
+  verbose: true,
+  setupFilesAfterEnv: [
+    '<rootDir>/test/setup.js'
+  ]
 }
-
-/**
- * @import { Config } from 'jest'
- */

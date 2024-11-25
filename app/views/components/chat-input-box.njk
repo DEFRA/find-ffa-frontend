@@ -1,0 +1,44 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% if validationError %}
+  {% set errorMessageText %} Please enter your query here {% endset %}
+{% endif %}
+
+<div class="commandPanel">
+  <label for="prompt-id" class="commandText govuk-body">{{ commandText }}</label>
+</div>
+
+<form method="POST" id="sendForm" action="/conversation/{{ conversationId }}#latestChatMessage">
+  <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+  <div class="promptArea">
+    <div class="promptTextArea">
+      {{ govukInput({
+        classes: "input",
+        id: "prompt-id", 
+        name: "input",
+        rows: "2",
+        errorMessage: {
+          text: "Please enter your query here"
+        } if errorMessageText else undefined
+      }) }}
+    </div>
+
+    <div class="hods-loading-spinner" id="loadingSpinner">
+      <div class="hods-loading-spinner__spinner" aria-live="polite" role="status"></div>
+    </div>
+
+    <button type="submit" class="sendButton govuk-button" id="sendButton" aria-label="Send">
+      <img src="/static/images/Expand_right.svg" alt="Send" />
+    </button>
+  </div>
+
+  {% if showHintText %}
+    <span class="hintText govuk-body-s govuk-!-margin-bottom-0">
+      Results from this AI-enabled tool may not always be 100% accurate – always check against the GOV.UK  content provided.
+    </span>
+  {% endif %}
+</form>
+
+{% include "components/instructions.njk" %}
