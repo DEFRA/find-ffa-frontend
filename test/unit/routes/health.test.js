@@ -1,6 +1,6 @@
-const healthz = require('../../../app/routes/healthz')
+const health = require('../../../app/routes/health')
 
-describe('/healthz', () => {
+describe('/health', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -14,7 +14,7 @@ describe('/healthz', () => {
       })
     }
 
-    await healthz.handler(mockRequest, mockH)
+    await health.handler(mockRequest, mockH)
 
     expect(mockH.response).toHaveBeenCalled()
   })

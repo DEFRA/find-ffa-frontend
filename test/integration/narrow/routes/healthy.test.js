@@ -8,10 +8,10 @@ describe('Healthy test', () => {
     await server.start()
   })
 
-  test('GET /healthy route returns 200', async () => {
+  test('GET /health route returns 200', async () => {
     const options = {
       method: 'GET',
-      url: '/healthy'
+      url: '/health'
     }
 
     const response = await server.inject(options)
