@@ -78,7 +78,7 @@ const schema = Joi.object({
 const config = {
   env: process.env.NODE_ENV,
   logLevel: process.env.LOG_LEVEL || 'error',
-  logFormat: process.env.NODE_ENV === 'production' ? 'ecs' : 'pino-pretty',
+  logFormat: process.env.LOG_FORMAT,
   httpsProxy: process.env.CDP_HTTPS_PROXY,
   httpProxy: process.env.CDP_HTTP_PROXY,
 

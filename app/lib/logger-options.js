@@ -14,7 +14,7 @@ const loggerOptions = {
     remove: true
   },
   level: config.logLevel,
-  ...formatters.ecs
+  ...formatters[config.logFormat]
 }
 
 module.exports = { loggerOptions }

@@ -4,7 +4,8 @@ const { createRetrievalChain } = require('langchain/chains/retrieval')
 const { createHistoryAwareRetriever } = require('langchain/chains/history_aware_retriever')
 // eslint-disable-next-line no-unused-vars
 const { BaseMessage } = require('@langchain/core/messages')
-const { AzureAISearchVectorStore } = require('../lib/azure-vector-store')
+// const { AzureAISearchVectorStore } = require('../lib/azure-vector-store')
+const { AzureAISearchVectorStore } = require('@langchain/community/vectorstores/azure_aisearch')
 const { getSearchClient } = require('../lib/azure-search-client')
 const config = require('../config')
 const { trackFetchResponseFailed } = require('../lib/events')
@@ -67,11 +68,13 @@ const runFetchAnswerQuery = async ({ query, chatHistory, summariesMode, embeddin
       retriever: historyAwareRetriever
     })
 
+    logger.debug('runFetchAnswerQuery - retrievalChain.invoke')
     const response = await retrievalChain.invoke({
       chat_history: chatHistory,
       input: query
     })
 
+    logger.debug('runFetchAnswerQuery - hallucinated')
     const hallucinated = !validateResponseLinks(response, query)
 
     logger.debug('runFetchAnswerQuery - end')

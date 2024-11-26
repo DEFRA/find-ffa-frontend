@@ -31,6 +31,8 @@ const onFailedAttempt = async (error) => {
 const getOpenAIClient = () => {
   const httpAgent = getHttpAgent()
 
+  logger.debug(`getOpenAIClient - ${config.azureOpenAI.openAiInstanceName} - ${config.azureOpenAI.openAiKey.substring(0, 2)} - ${config.azureOpenAI.openAiModelName}`)
+
   const model = config.useFakeLlm
     ? new FakeChatModel({ onFailedAttempt })
     : new ChatOpenAI({
@@ -41,6 +43,7 @@ const getOpenAIClient = () => {
       configuration: {
         httpAgent
       },
+      verbose: true,
       onFailedAttempt
     })
 
@@ -54,6 +57,8 @@ const getOpenAIClient = () => {
 const getEmbeddingClient = () => {
   const httpAgent = getHttpAgent()
 
+  logger.debug(`getEmbeddingClient - ${config.azureOpenAI.openAiInstanceName} - ${config.azureOpenAI.openAiKey.substring(0, 2)}`)
+
   const embeddings = new OpenAIEmbeddings({
     azureOpenAIApiInstanceName: config.azureOpenAI.openAiInstanceName,
     azureOpenAIApiKey: config.azureOpenAI.openAiKey,
@@ -62,6 +67,7 @@ const getEmbeddingClient = () => {
     configuration: {
       httpAgent
     },
+    verbose: true,
     onFailedAttempt
   })
 

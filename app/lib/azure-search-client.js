@@ -1,5 +1,6 @@
 const { AzureKeyCredential, SearchClient } = require('@azure/search-documents')
 const config = require('../config')
+const { logger } = require('./logger')
 
 /**
  * Returns instance of azure ai search client
@@ -17,9 +18,11 @@ const getSearchClient = () => {
     }
   }
 
+  logger.debug(`SearchClient - ${config.azureOpenAI.searchUrl} - ${config.azureOpenAI.searchApiKey.substring(0, 2)} - ${config.azureOpenAI.indexName}`)
+
   const searchClient = new SearchClient(
     config.azureOpenAI.searchUrl,
-    config.azureOpenAI.cacheIndexName,
+    config.azureOpenAI.indexName,
     new AzureKeyCredential(config.azureOpenAI.searchApiKey),
     {
       proxyOptions
