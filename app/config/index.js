@@ -1,5 +1,4 @@
 const Joi = require('joi')
-const { logger } = require('../lib/logger')
 
 if (process.env.NODE_ENV !== 'test') {
   require('dotenv').config()
@@ -41,7 +40,7 @@ const schema = Joi.object({
   redis: Joi.object({
     host: Joi.string().default(''),
     password: Joi.string().default(''),
-    port: Joi.number().integer().default(''),
+    port: Joi.string().default(''),
     tls: Joi.any()
   }).required(),
 
@@ -149,8 +148,7 @@ const result = schema.validate(config, {
 })
 
 if (result.error) {
-  logger.error(result.error.message, 'The app config is invalid')
-  throw new Error('The app config is invalid')
+  throw new Error(`The app config is invalid. ${result.error.message}`)
 }
 
 module.exports = config
