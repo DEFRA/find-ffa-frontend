@@ -1,5 +1,5 @@
 const pino = require('pino')
-const loggerOptions = require('./logger-options')
+const { loggerOptions } = require('./logger-options')
 
 const getLogger = () => {
   return pino(loggerOptions)
