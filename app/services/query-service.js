@@ -5,15 +5,19 @@ const { createHistoryAwareRetriever } = require('langchain/chains/history_aware_
 // eslint-disable-next-line no-unused-vars
 const { BaseMessage } = require('@langchain/core/messages')
 const { AzureAISearchVectorStore } = require('../lib/azure-vector-store')
+const { getSearchClient } = require('../lib/azure-search-client')
 const config = require('../config')
 const { trackFetchResponseFailed } = require('../lib/events')
 const { getPrompt } = require('../domain/prompt')
 const { searchCache, uploadToCache } = require('./ai-search-service')
 const { validateResponseLinks } = require('../utils/validators')
 const { getOpenAIClient, getEmbeddingClient } = require('../lib/open-ai-client')
+const { logger } = require('../lib/logger')
 
 const runFetchAnswerQuery = async ({ query, chatHistory, summariesMode, embeddings, model, retryCount }) => {
   try {
+    logger.debug('runFetchAnswerQuery - start')
+
     const vectorStoreKey = summariesMode ? 'summaryIndexName' : 'indexName'
     const itemsToCheck = summariesMode ? 40 : 20
     const promptText = getPrompt(summariesMode)
@@ -29,13 +33,16 @@ const runFetchAnswerQuery = async ({ query, chatHistory, summariesMode, embeddin
       prompt
     })
 
+    const client = getSearchClient()
+
     const vectorStore = new AzureAISearchVectorStore(embeddings, {
       endpoint: config.azureOpenAI.searchUrl,
       indexName: config.azureOpenAI[vectorStoreKey],
       key: config.azureOpenAI.searchApiKey,
       search: {
         type: 'similarity'
-      }
+      },
+      client
     })
 
     const retriever = vectorStore.asRetriever(itemsToCheck, { includeEmbeddings: true })
@@ -67,8 +74,11 @@ const runFetchAnswerQuery = async ({ query, chatHistory, summariesMode, embeddin
 
     const hallucinated = !validateResponseLinks(response, query)
 
+    logger.debug('runFetchAnswerQuery - end')
+
     return { response, hallucinated }
   } catch (error) {
+    logger.error(error, 'runFetchAnswerQuery - error')
     trackFetchResponseFailed({
       errorMessage: error.message,
       requestQuery: query,
