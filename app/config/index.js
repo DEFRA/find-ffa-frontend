@@ -110,7 +110,7 @@ const config = {
   redis: {
     host: process.env.REDIS_HOST || '',
     password: process.env.REDIS_PASSWORD || '',
-    port: process.env.REDIS_PORT ? Number(process.env.REDIS_PORT) : '',
+    port: process.env.REDIS_PORT || '',
     tls: process.env.NODE_ENV === 'production' ? {} : undefined
   },
 
