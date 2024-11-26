@@ -12,14 +12,15 @@ const getHttpAgent = () => {
     httpAgent = new HttpsProxyAgent(proxyUrl)
   }
 
+  logger.debug(`proxy - ${proxyUrlConfig}`)
+
   return httpAgent
 }
 
 const onFailedAttempt = async (error) => {
-  logger.error(error)
-
   if (error.retriesLeft === 0) {
-    throw new Error(`Failed to get embeddings: ${error}`)
+    logger.error(error, 'Failed to get embeddings')
+    throw error
   }
 }
 
