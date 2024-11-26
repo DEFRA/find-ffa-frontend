@@ -1,10 +1,10 @@
 const { ecsFormat } = require('@elastic/ecs-pino-format')
 const config = require('../config')
 
-const formatters = {
-  ecs: ecsFormat(),
-  'pino-pretty': { transport: { target: 'pino-pretty' } }
-}
+// const formatters = {
+//   ecs: ecsFormat(),
+//   'pino-pretty': { transport: { target: 'pino-pretty' } }
+// }
 
 const loggerOptions = {
   enabled: true,
@@ -14,7 +14,7 @@ const loggerOptions = {
     remove: true
   },
   level: config.logLevel,
-  ...formatters[config.logFormat]
+  formatters: ecsFormat()
 }
 
 module.exports = { loggerOptions }

@@ -47,7 +47,6 @@
     "markdown-it": "^14.0.0",
     "nunjucks": "3.2.4",
     "pino": "^7.11.0",
-    "pino-abstract-transport": "^1.2.0",
     "pino-pretty": "^7.6.1",
     "uuid": "^9.0.1"
   },
