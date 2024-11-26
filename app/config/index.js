@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const { logger } = require('../lib/logger')
 
 if (process.env.NODE_ENV !== 'test') {
   require('dotenv').config()
@@ -7,7 +8,7 @@ if (process.env.NODE_ENV !== 'test') {
 const schema = Joi.object({
   env: Joi.string().valid('development', 'test', 'production').required(),
   logLevel: Joi.string().default('error'),
-  logFormat: Joi.string().optional(),
+  logFormat: Joi.string().required(),
   serviceName: Joi.string().default('find-ffa-frontend'),
   httpsProxy: Joi.string().optional(),
   httpProxy: Joi.string().optional(),
@@ -148,7 +149,8 @@ const result = schema.validate(config, {
 })
 
 if (result.error) {
-  throw new Error(`The app config is invalid. ${result.error.message}`)
+  logger.error(result.error.message, 'The app config is invalid')
+  throw new Error('The app config is invalid')
 }
 
 module.exports = config
