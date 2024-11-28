@@ -38,7 +38,7 @@ const getOpenAIClient = () => {
     : new ChatOpenAI({
       azureOpenAIApiInstanceName: config.azureOpenAI.openAiInstanceName,
       azureOpenAIApiKey: config.azureOpenAI.openAiKey,
-      azureOpenAIApiDeploymentName: config.azureOpenAI.openAiModelName,
+      azureOpenAIApiDeploymentName: 'gpt-35-turbo-16k',
       azureOpenAIApiVersion: '2024-02-01',
       configuration: {
         httpAgent

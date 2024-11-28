@@ -52,13 +52,11 @@ const schema = Joi.object({
     indexName: Joi.string().required(),
     summaryIndexName: Joi.string().required(),
     cacheEnabled: Joi.boolean().default(true),
-    cacheIndexName: Joi.string().required(),
     cacheTarget: Joi.number().required(),
 
     openAiInstanceName: Joi.string().required(),
     openAiEndpoint: Joi.string().uri().required(),
     openAiKey: Joi.string().required(),
-    openAiDeploymentName: Joi.string().required(),
     openAiModelName: Joi.string().required(),
 
     tokenBudget: Joi.number()
@@ -122,13 +120,11 @@ const config = {
     indexName: process.env.AZURE_SEARCH_INDEX_NAME,
     summaryIndexName: process.env.AZURE_SEARCH_SUMMARIES_INDEX_NAME,
     cacheEnabled: process.env.AZURE_SEARCH_CACHE_ENABLED !== 'false',
-    cacheIndexName: process.env.AZURE_SEARCH_CACHE_INDEX_NAME,
     cacheTarget: Number(process.env.AZURE_SEARCH_CACHE_TARGET),
 
     openAiInstanceName: process.env.AZURE_OPENAI_API_INSTANCE_NAME,
     openAiEndpoint: process.env.AZURE_OPENAI_API_ENDPOINT,
     openAiKey: process.env.AZURE_OPENAI_API_KEY,
-    openAiDeploymentName: process.env.AZURE_OPENAI_API_EMBEDDING_DEPLOYMENT_NAME,
     openAiModelName: process.env.AZURE_OPENAI_API_MODEL_NAME,
 
     tokenBudget: 16384 - 1024
