@@ -1,13 +1,11 @@
-# Farming funding assistant
+# Farming Funding Assistant (FFA) Frontend
+
+Note that this is port of https://github.com/DEFRA/fcp-find-ai-frontend, which he been configured to run in CDP. It therefore doesn't follow the usual CDP template and code conventions
 
 ## Prerequisites
 
 - Docker
 - Docker Compose
-
-Optional:
-- Kubernetes
-- Helm
 
 ## Local Development
 Install local dependencies
@@ -22,9 +20,9 @@ cp .env.example .env
 
 Spin up docker container
 ```BASH
-docker-compose up 
+docker compose up 
 ### or to launch in the background:
-docker-compose up -d
+docker compose up -d
 ```
 
 Build frontend assets
@@ -34,16 +32,9 @@ npm run build
 
 Run application on http://localhost:3000/
 
-
 ## Running the application
 
-The application is designed to run in containerised environments, using Docker Compose in development and Kubernetes in production.
-
-- A Helm chart is provided for production deployments to Kubernetes.
-
 ### Build container image
-
-Container images are built using Docker Compose, with the same images used to run the service with either Docker Compose or Kubernetes.
 
 When using the Docker Compose files in development the local `app` folder will
 be mounted on top of the `app` folder within the Docker container, hiding the CSS files that were generated during the Docker build.  For the site to render correctly locally `npm run build` must be run on the host system. This will run `webpack` build and prevents `_layout.njk` file being replaced by volume mapping in `docker-compose.override.yaml`.
@@ -56,15 +47,15 @@ through the Docker Compose
 
 ```
 # Build container images
-docker-compose build
-```
+docker compose build
+````
 
 ### Start
 
 Use Docker Compose to run service locally.
 
 ```
-docker-compose up
+docker compose up
 ```
 
 ## Test structure
@@ -92,19 +83,7 @@ scripts/test -w
 
 ## CI pipeline
 
-This service uses the ADP CI pipeline.
-
-### AppConfig - KeyVault References
-If the application uses `keyvault references` in `appConfig.env.yaml`, please make sure the variable to be added to keyvault is created in ADO Library variable groups and the reference for the variable groups and variables are provided in `build.yaml` like below.
-
-```
-variableGroups: 
-    - fcp-find-ai-frontend-snd1
-    - fcp-find-ai-frontend-snd2
-    - fcp-find-ai-frontend-snd3
-variables:
-    - fcp-find-ai-frontend-APPINSIGHTS-CONNECTIONSTRING
-```
+This service uses github actions, as per CDP standard. See `.github`
 
 ## Licence
 
