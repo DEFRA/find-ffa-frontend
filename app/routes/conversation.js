@@ -6,7 +6,6 @@ const { trackMessage, trackSystemMessage, trackConversationPageView } = require(
 const boom = require('@hapi/boom')
 const { redact } = require('../utils/redact-utils')
 const config = require('../config')
-const { logger } = require('../lib/logger')
 
 module.exports = [
   {
@@ -77,8 +76,6 @@ module.exports = [
         role: 'user',
         answer: redactedQuery
       })
-
-      logger.debug(`conversation - fetchAnswer ${redactedQuery} ${chatHistory} ${config.azureOpenAI.cacheEnabled} ${config.featureSummaryEnabled}`)
 
       const { response, summariesMode, hallucinated } = await fetchAnswer(request, redactedQuery, chatHistory, config.azureOpenAI.cacheEnabled, config.featureSummaryEnabled)
 

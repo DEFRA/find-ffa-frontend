@@ -1,6 +1,5 @@
 const { AzureKeyCredential, SearchClient } = require('@azure/search-documents')
 const config = require('../config')
-const { logger } = require('./logger')
 
 /**
  * Returns instance of azure ai search client
