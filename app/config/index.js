@@ -57,7 +57,6 @@ const schema = Joi.object({
     openAiInstanceName: Joi.string().required(),
     openAiEndpoint: Joi.string().uri().required(),
     openAiKey: Joi.string().required(),
-    openAiModelName: Joi.string().required(),
 
     tokenBudget: Joi.number()
       .integer()
@@ -125,7 +124,6 @@ const config = {
     openAiInstanceName: process.env.AZURE_OPENAI_API_INSTANCE_NAME,
     openAiEndpoint: process.env.AZURE_OPENAI_API_ENDPOINT,
     openAiKey: process.env.AZURE_OPENAI_API_KEY,
-    openAiModelName: process.env.AZURE_OPENAI_API_MODEL_NAME,
 
     tokenBudget: 16384 - 1024
   },
