@@ -4,8 +4,7 @@ const { createRetrievalChain } = require('langchain/chains/retrieval')
 const { createHistoryAwareRetriever } = require('langchain/chains/history_aware_retriever')
 // eslint-disable-next-line no-unused-vars
 const { BaseMessage } = require('@langchain/core/messages')
-// const { AzureAISearchVectorStore } = require('../lib/azure-vector-store')
-const { AzureAISearchVectorStore } = require('@langchain/community/vectorstores/azure_aisearch')
+const { AzureAISearchVectorStore } = require('../lib/azure-vector-store')
 const { getSearchClient } = require('../lib/azure-search-client')
 const config = require('../config')
 const { trackFetchResponseFailed } = require('../lib/events')
@@ -17,8 +16,6 @@ const { logger } = require('../lib/logger')
 
 const runFetchAnswerQuery = async ({ query, chatHistory, summariesMode, embeddings, model, retryCount }) => {
   try {
-    logger.debug('runFetchAnswerQuery - start')
-
     const vectorStoreKey = summariesMode ? 'summaryIndexName' : 'indexName'
     const itemsToCheck = summariesMode ? 40 : 20
     const promptText = getPrompt(summariesMode)
@@ -68,16 +65,12 @@ const runFetchAnswerQuery = async ({ query, chatHistory, summariesMode, embeddin
       retriever: historyAwareRetriever
     })
 
-    logger.debug('runFetchAnswerQuery - retrievalChain.invoke')
     const response = await retrievalChain.invoke({
       chat_history: chatHistory,
       input: query
     })
 
-    logger.debug('runFetchAnswerQuery - hallucinated')
     const hallucinated = !validateResponseLinks(response, query)
-
-    logger.debug('runFetchAnswerQuery - end')
 
     return { response, hallucinated }
   } catch (error) {
@@ -130,6 +123,7 @@ const runFetchAnswer = async ({ query, chatHistory, cacheEnabled, summariesEnabl
       hallucinated
     }
   } catch (error) {
+    logger.error(error, 'runFetchAnswer error')
     return {
       response: JSON.stringify({ answer: 'This tool cannot answer that kind of question, ask something about Defra funding instead', items: [] }),
       hallucinated: true,

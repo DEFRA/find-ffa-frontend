@@ -119,7 +119,7 @@ const config = {
     searchApiKey: process.env.AZURE_AISEARCH_KEY,
     indexName: process.env.AZURE_SEARCH_INDEX_NAME,
     summaryIndexName: process.env.AZURE_SEARCH_SUMMARIES_INDEX_NAME,
-    cacheEnabled: process.env.AZURE_SEARCH_CACHE_ENABLED !== 'false',
+    cacheEnabled: process.env.AZURE_SEARCH_CACHE_ENABLED === 'true',
     cacheTarget: Number(process.env.AZURE_SEARCH_CACHE_TARGET),
 
     openAiInstanceName: process.env.AZURE_OPENAI_API_INSTANCE_NAME,
