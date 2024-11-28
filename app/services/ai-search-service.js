@@ -50,17 +50,17 @@ const searchCache = async (query) => {
       }
 
       if (result.score >= scoreTarget) {
-        logger.debug(Event.CACHE_HIT, { score: result.score, target: scoreTarget })
+        logger.debug(`${Event.CACHE_HIT} - score: ${result.score} - target: ${scoreTarget}`)
 
         return result.document.answer
       }
     }
 
-    logger.debug(Event.CACHE_MISS, { score: highestScore, target: scoreTarget })
+    logger.debug(`${Event.CACHE_MISS} - score: ${highestScore} - target: ${scoreTarget}`)
 
     return undefined
   } catch (error) {
-    logger.debug(Event.CACHE_MISS, { score: 0, target: scoreTarget, failed: true })
+    logger.debug(`${Event.CACHE_MISS} - score: 0 - target: ${scoreTarget}, failed: true`)
     logger.error(error)
 
     return undefined
